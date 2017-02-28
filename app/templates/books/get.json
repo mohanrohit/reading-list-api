@@ -1,0 +1,4 @@
+"book": {
+  "id": {{book.id}},
+  "title": "{{book.title}}"
+}
