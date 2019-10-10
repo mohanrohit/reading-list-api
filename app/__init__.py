@@ -10,9 +10,8 @@ app.config.from_envvar("CONFIG")
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-
-CORS(app, resources={r"/*": {"origins": "*"}})
-
 migrate = Migrate(app, db, directory=app.config["MIGRATIONS_PATH"])
+
+CORS(app)
 
 from app import models, views
