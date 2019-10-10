@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/ -->
+<sql>
+    <datatypes db="mysql">
+        <group label="Numeric" color="rgb(238,238,170)">
+            <type quote="" length="0" sql="INTEGER" label="Integer"/>
+            <type quote="" length="0" sql="TINYINT" label="TINYINT"/>
+            <type quote="" length="0" sql="SMALLINT" label="SMALLINT"/>
+            <type quote="" length="0" sql="MEDIUMINT" label="MEDIUMINT"/>
+            <type quote="" length="0" sql="INT" label="INT"/>
+            <type quote="" length="0" sql="BIGINT" label="BIGINT"/>
+            <type re="DEC" quote="" length="1" sql="DECIMAL" label="Decimal"/>
+            <type quote="" length="0" sql="FLOAT" label="Single precision"/>
+            <type re="DOUBLE" quote="" length="0" sql="DOUBLE" label="Double precision"/>
+        </group>
+        <group label="Character" color="rgb(255,200,200)">
+            <type quote="'" length="1" sql="CHAR" label="Char"/>
+            <type quote="'" length="1" sql="VARCHAR" label="Varchar"/>
+            <type re="TEXT" quote="'" length="0" sql="MEDIUMTEXT" label="Text"/>
+            <type quote="'" length="1" sql="BINARY" label="Binary"/>
+            <type quote="'" length="1" sql="VARBINARY" label="Varbinary"/>
+            <type re="BLOB" quote="'" length="0" sql="BLOB" label="BLOB"/>
+        </group>
+        <group label="Date &amp; Time" color="rgb(200,255,200)">
+            <type quote="'" length="0" sql="DATE" label="Date"/>
+            <type quote="'" length="0" sql="TIME" label="Time"/>
+            <type quote="'" length="0" sql="DATETIME" label="Datetime"/>
+            <type quote="" length="0" sql="YEAR" label="Year"/>
+            <type quote="'" length="0" sql="TIMESTAMP" label="Timestamp"/>
+        </group>
+        <group label="Miscellaneous" color="rgb(200,200,255)">
+            <type quote="" length="1" sql="ENUM" label="ENUM"/>
+            <type quote="" length="1" sql="SET" label="SET"/>
+            <type quote="" length="0" sql="bit" label="Bit"/>
+        </group>
+    </datatypes>
+    <table x="401" y="365" name="books">
+        <row autoincrement="1" null="0" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="title">
+            <datatype>VARCHAR(255)</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="genre_id">
+            <datatype>INTEGER</datatype>
+            <relation row="id" table="genres"/>
+        </row>
+        <row autoincrement="0" null="1" name="isbn">
+            <datatype>VARCHAR(20)</datatype>
+            <default>NULL</default>
+        </row>
+        <row autoincrement="0" null="1" name="created_at">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default>
+        </row>
+        <row autoincrement="0" null="1" name="updated_at">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default>
+        </row>
+        <row autoincrement="0" null="0" name="created_by">
+            <datatype>INTEGER</datatype>
+            <relation row="id" table="users"/>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="602" y="198" name="books_authors">
+        <row autoincrement="1" null="0" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="book_id">
+            <datatype>INTEGER</datatype>
+            <relation row="id" table="books"/>
+        </row>
+        <row autoincrement="0" null="0" name="author_id">
+            <datatype>INTEGER</datatype>
+            <relation row="id" table="authors"/>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="202" y="301" name="genres">
+        <row autoincrement="1" null="0" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="name">
+            <datatype>VARCHAR(64)</datatype>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="202" y="452" name="users">
+        <row autoincrement="1" null="1" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="1" null="0" name="name">
+            <datatype>VARCHAR(255)</datatype>
+        </row>
+        <row autoincrement="0" null="1" name="password">
+            <datatype>VARCHAR(255)</datatype>
+            <default>NULL</default>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="902" y="300" name="authors">
+        <row autoincrement="1" null="1" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="name">
+            <datatype>VARCHAR(255)</datatype>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="802" y="501" name="tags">
+        <row autoincrement="1" null="0" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="name">
+            <datatype>VARCHAR(32)</datatype>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="601" y="501" name="books_tags">
+        <row autoincrement="1" null="0" name="id">
+            <datatype>INTEGER</datatype>
+        </row>
+        <row autoincrement="0" null="0" name="book_id">
+            <datatype>INTEGER</datatype>
+            <relation row="id" table="books"/>
+        </row>
+        <row autoincrement="0" null="0" name="tag_id">
+            <datatype>INTEGER</datatype>
+            <relation row="id" table="tags"/>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+</sql>

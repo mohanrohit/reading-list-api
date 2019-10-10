@@ -1,24 +1,16 @@
-import sys
-
-from end_statement import end
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
-app.config.from_object("config.DevelopmentConfig")
+app.config.from_object("config.default")
+app.config.from_envvar("CONFIG")
 
 db = SQLAlchemy(app)
 
-from models import *
+ma = Marshmallow(app)
 
-# import all controllers modules, and for each controller module,
-# register the app for the controller class in that module
-from controllers import *
+migrate = Migrate(app, db, directory=app.config["MIGRATIONS_PATH"])
 
-controller_modules = [sys.modules[module_name] for module_name in sys.modules if module_name.endswith("_controller")]
-
-controller_classes = [getattr(module, attribute) for module in controller_modules for attribute in dir(module) if attribute.endswith("Controller")]
-for controller_class in controller_classes:
-  controller_class.register(app, route_base="/", trailing_slash=False)
-end
+from app import models, views

@@ -1,8 +1,0 @@
-{
-  "books": [
-    {% for book in books %}
-    "id": {{book.id}},
-    "title": "{{book.title}}"
-    {% endfor %}
-  ]
-}
