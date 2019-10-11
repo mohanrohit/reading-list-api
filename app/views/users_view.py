@@ -17,15 +17,11 @@ class UserSchema(ma.Schema):
         unknown = EXCLUDE
     end
 
-    def is_user_active(self, user):
-        return "yes" if user.is_active else "no"
-    end
-
     first_name = ma.String(required=True, error_messages={ "required": "First name is required" })
     last_name = ma.String(required=True, error_messages={ "required": "Last name is required" })
     email = ma.String(required=True, error_messages={ "required": "Email is required" })
     url = ma.URLFor("UsersView:get", id="<id>")
-    is_active = ma.Method("is_user_active")
+    is_active = ma.Boolean()
 end
 
 user_schema = UserSchema()
@@ -73,14 +69,14 @@ class UsersView(View):
         user = request.user
         params = request.json
 
-        if params.get("first_name"):
+        if "first_name" in params:
             user.first_name = params["first_name"]
 
-        if params.get("last_name"):
+        if "last_name" in params:
             user.last_name = params["last_name"]
 
-        if params.get("is_active"):
-            user.is_active = params["is_active"] in ["YES", "yes", "Y", "y", 1]
+        if "is_active" in params:
+            user.is_active = params["is_active"] in ["YES", "yes", "Y", "y", 1, True]
 
         user.save()
 
