@@ -88,5 +88,6 @@ class UsersView(View):
 
         return jsonify({}), 204
     end
+end
 
 UsersView.register(app, base_class=View)
