@@ -75,6 +75,9 @@ class UsersView(View):
         if "last_name" in params:
             user.last_name = params["last_name"]
 
+        if "email" in params:
+            user.email = params["email"]
+
         if "is_active" in params:
             user.is_active = params["is_active"] in ["YES", "yes", "Y", "y", 1, True]
 
