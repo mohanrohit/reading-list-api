@@ -8,6 +8,8 @@ from flask import url_for
 from flask import request
 from flask import jsonify
 
+from flask_classful import route
+
 from marshmallow import ValidationError, EXCLUDE
 
 from .view import View
@@ -90,6 +92,14 @@ class UsersView(View):
         request.user.delete()
 
         return jsonify({}), 204
+    end
+
+    @route("/<int:id>/books", methods=["POST"])
+    def add_book(self, id):
+        user = request.user
+        params = request.json
+        new_book = user.create_book(request.json)
+        return jsonify({ "title": new_book.title })
     end
 end
 
