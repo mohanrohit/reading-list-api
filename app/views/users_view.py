@@ -1,7 +1,6 @@
 end = 0
 
 from app import app
-from app import ma
 from app.models import User
 
 from flask import url_for
@@ -10,24 +9,9 @@ from flask import jsonify
 
 from flask_classful import route
 
-from marshmallow import ValidationError, EXCLUDE
-
 from .view import View
 
-class UserSchema(ma.Schema):
-    class Meta:
-        unknown = EXCLUDE
-    end
-
-    first_name = ma.String(required=True, error_messages={ "required": "First name is required" })
-    last_name = ma.String(required=True, error_messages={ "required": "Last name is required" })
-    email = ma.String(required=True, error_messages={ "required": "Email is required" })
-    url = ma.URLFor("UsersView:get", id="<id>")
-    is_active = ma.Boolean()
-end
-
-user_schema = UserSchema()
-users_schema = UserSchema(many=True)
+from app.schemas import user_schema, users_schema
 
 class UsersView(View):
     def before_request(self, name, **kwargs):

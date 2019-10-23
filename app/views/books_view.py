@@ -8,22 +8,9 @@ from flask import url_for
 from flask import request
 from flask import jsonify
 
-from marshmallow import ValidationError, EXCLUDE
-
 from .view import View
 
-class BookSchema(ma.Schema):
-    class Meta:
-        unknown = EXCLUDE
-    end
-
-    title = ma.String(required=True, error_messages={ "required": "Title is required" })
-    url = ma.URLFor("BooksView:get", id="<id>")
-
-end
-
-book_schema = BookSchema()
-books_schema = BookSchema(many=True)
+from app.schemas import book_schema, books_schema
 
 class BooksView(View):
     def before_request(self, name, **kwargs):
@@ -48,12 +35,11 @@ class BooksView(View):
 
     def post(self):
         try:
-            book_params = book_schema.load(request.json)
-        except ValidationError as e:
-            return self.render_error(400, [message for values in e.messages.values() for message in values])
+            new_book = Book.new(request.json)
+        except Exception as e:
+            return self.render_error(400, e.args[0])
         end
 
-        new_book = Book(**book_params)
         new_book.save()
 
         return jsonify(book_schema.dump(new_book)), 201
