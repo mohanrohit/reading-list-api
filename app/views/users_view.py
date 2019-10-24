@@ -39,7 +39,6 @@ class UsersView(View):
     end
 
     def index(self):
-        print("getting all users")
         users = User.all()
 
         return jsonify({ "users": users_schema.dump(users) })

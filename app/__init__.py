@@ -15,4 +15,3 @@ migrate = Migrate(app, db, directory=app.config["MIGRATIONS_PATH"])
 CORS(app)
 
 from app import models, views
-print("imported models and views")
