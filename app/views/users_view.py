@@ -11,7 +11,7 @@ from flask_classful import route
 
 from .view import View
 
-from app.schemas import user_schema, users_schema
+from app.schemas import user_schema, users_schema, book_schema
 
 class UsersView(View):
     def before_request(self, name, **kwargs):
@@ -80,9 +80,16 @@ class UsersView(View):
     @route("/<int:id>/books", methods=["POST"])
     def add_book(self, id):
         user = request.user
-        params = request.json
-        new_book = user.create_book(request.json)
-        return jsonify({ "title": new_book.title })
+
+        try:
+            new_book = user.create_book(request.json)
+        except Exception as e:
+            return self.render_error(400, e.args[0])
+        end
+
+        new_book.save()
+
+        return jsonify(book_schema.dump(new_book)), 201
     end
 end
 

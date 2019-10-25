@@ -47,6 +47,7 @@ class BooksView(View):
 
     def put(self, id):
         book = request.book
+
         params = request.json
 
         if "title" in params:

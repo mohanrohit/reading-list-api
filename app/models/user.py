@@ -14,9 +14,8 @@ class User(Model):
 
     def create_book(self, book_params):
         try:
-            new_book = Book(**book_params)
+            new_book = Book.new(book_params)
         except Exception as e:
-            print(e)
             raise
 
         self.add_book(new_book)
