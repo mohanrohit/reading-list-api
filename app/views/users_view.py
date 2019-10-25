@@ -35,17 +35,16 @@ class UsersView(View):
     end
 
     def post(self):
+        if "email" in request.json and User.exists(email=request.json["email"]):
+            return self.render_error(400, f"A user with email {request.json['email']} already exists")
+        end
+
         try:
-            user_params = user_schema.load(request.json)
-        except ValidationError as e:
-            return self.render_error(400, [message for values in e.messages.values() for message in values])
+            new_user = User.new(request.json)
+        except Exception as e:
+            return self.render_error(400, e.args[0])
         end
 
-        if User.exists(email=user_params["email"]):
-            return self.render_error(400, f"A user with email {user_params['email']} already exists")
-        end
-
-        new_user = User(**user_params)
         new_user.save()
 
         return jsonify(user_schema.dump(new_user)), 201
