@@ -1,4 +1,10 @@
+end = 0
+
 from app import db
+
+from marshmallow import ValidationError
+
+from app.schemas import schemas
 
 class Model(db.Model):
     __abstract__ = True
@@ -20,6 +26,23 @@ class Model(db.Model):
         result = cls.find_one(**params)
 
         return True if result else False
+    end
+
+    @classmethod
+    def new(cls, params):
+        if not cls.__name__ in schemas:
+            raise Exception(f"No schema is defined for class {cls.__name__}")
+        end
+
+        try:
+            model_params = schemas[cls.__name__].load(params)
+        except ValidationError as e:
+            error_message = "; ".join([message for values in e.messages.values() for message in values])
+
+            raise Exception(error_message)
+        end
+
+        return cls(**model_params)
 
     def save(self):
         db.session.add(self)
