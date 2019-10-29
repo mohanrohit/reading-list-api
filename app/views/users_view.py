@@ -92,11 +92,12 @@ class UsersView(View):
     @route("/<int:id>/books", methods=["GET"])
     def get_books(self, id):
         return jsonify({ "books": books_schema.dump(request.user.books) })
+    end
 
     # POST /api/v1/users/<id>/books
     @route("/<int:id>/books", methods=["POST"])
     def add_book(self, id):
-        if "book_id" in request.json: 
+        if "book_id" in request.json:
             book = Book.find(request.json["book_id"])
 
             if not book:

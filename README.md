@@ -8,3 +8,9 @@ An application to maintain a reading list
 - CRUD with users and books:
   - CRUD books
   - Add/remove books to/from users
+
+### Sprint 4 (2019/10/28 - 2019/11/08)
+
+- Add field to indicate whether a user has read a book or not
+  - Accept that field as an input while adding a book to a user
+  - Return that field with the books returned

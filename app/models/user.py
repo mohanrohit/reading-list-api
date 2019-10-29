@@ -13,18 +13,14 @@ class User(Model):
     last_name = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), nullable=False, unique=True, index=True)
     is_active = db.Column(db.Boolean(), default=False, nullable=False)
-    books = db.relationship("Book", secondary="user_books", lazy="dynamic")
+    #books = db.relationship("Book", secondary="user_books", lazy="dynamic")
 
     def has_book(self, book):
         return True if UserBook.find_one(user_id=self.id, book_id=book.id) else False
     end
 
     def create_book(self, book_params):
-        try:
-            new_book = Book.new(book_params)
-        except Exception as e:
-            raise
-
+        new_book = Book.new(book_params)
         self.add_book(new_book)
 
         return new_book
@@ -36,7 +32,6 @@ class User(Model):
         end
 
         self.books.append(book)
-
         self.save()
 
         return book
