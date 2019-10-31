@@ -11,7 +11,9 @@ from flask_classful import route
 
 from .view import View
 
-from app.schemas import user_schema, users_schema, book_schema, books_schema
+from app.schemas import user_schema, users_schema
+from app.schemas import book_schema, books_schema
+from app.schemas import user_book_schema, user_books_schema
 
 class UsersView(View):
     def before_request(self, name, **kwargs):
@@ -79,7 +81,7 @@ class UsersView(View):
 
     def _create_new_book_for_user(self, user, params):
         new_book = user.create_book(params)
-        new_book.save()
+        #new_book.save()
 
         return new_book
     end
@@ -91,7 +93,9 @@ class UsersView(View):
     # GET /api/v1/users/<id>/books
     @route("/<int:id>/books", methods=["GET"])
     def get_books(self, id):
-        return jsonify({ "books": books_schema.dump(request.user.books) })
+        user_books = request.user.user_books
+
+        return jsonify({ "books": user_books_schema.dump(user_books) })
     end
 
     # POST /api/v1/users/<id>/books
@@ -104,10 +108,10 @@ class UsersView(View):
                 return self.render_error(400, f"The book with id {request.json['book_id']} was not found")
             end
 
-            self._add_existing_book_to_user(request.user, book)
+            user_book = self._add_existing_book_to_user(request.user, book)
         else:
             try:
-                book = self._create_new_book_for_user(request.user, request.json)
+                user_book = self._create_new_book_for_user(request.user, request.json)
             except Exception as e:
                 return self.render_error(400, e.args[0])
             end
@@ -116,7 +120,7 @@ class UsersView(View):
         # return 201 for both adding a new book and adding an existing book
         # because adding an existing book can be considered to be creating
         # a *new* book FOR the user
-        return jsonify(book_schema.dump(book)), 201
+        return jsonify(user_book_schema.dump(user_book)), 201
     end
 
     # DELETE /api/v1/users/<id>/books/<book_id>
