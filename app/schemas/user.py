@@ -1,16 +1,39 @@
-from app import ma
+end = 0
 
-from marshmallow import ValidationError, EXCLUDE
+from flask import url_for
 
-class UserSchema(ma.Schema):
-    class Meta:
-        unknown = EXCLUDE
+from .schema import Schema, ValidationError
 
-    first_name = ma.String(required=True, error_messages={ "required": "First name is required" })
-    last_name = ma.String(required=True, error_messages={ "required": "Last name is required" })
-    email = ma.String(required=True, error_messages={ "required": "Email is required" })
-    url = ma.URLFor("UsersView:get", id="<id>")
-    is_active = ma.Boolean()
+class UserSchema(Schema):
+    def __init__(self, many=False):
+        Schema.__init__(self, many)
+    end
+
+    def validate(self, params):
+        self.validate_required(params, "first_name", "First name is required")
+        self.validate_required(params, "last_name", "Last name is required")
+        self.validate_required(params, "email", "Last name is required")
+
+        return \
+        { 
+            "first_name": params["first_name"],
+            "last_name": params["last_name"],
+            "email": params["email"],
+            "is_active": params.get("is_active", False)
+        }
+    end
+
+    def transform(self, user):
+        return \
+        {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "is_active": user.is_active,
+            "url": url_for("UsersView:get", id=user.id)
+        }
+    end
+end
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)

@@ -1,13 +1,28 @@
-from app import ma
+end = 0
 
-from marshmallow import EXCLUDE
+from flask import url_for
 
-class BookSchema(ma.Schema):
-    class Meta:
-        unknown = EXCLUDE
+from .schema import Schema, ValidationError
 
-    title = ma.String(required=True, error_messages={ "required": "The title of the book is required" })
-    url = ma.URLFor("BooksView:get", id="<id>")
+class BookSchema(Schema):
+    def __init__(self, many=False):
+        Schema.__init__(self, many)
+    end
+
+    def validate(self, params):
+        self.validate_required(params, title, "The title of the book is required")
+
+        return { "title": params["title"] }
+    end
+
+    def transform(self, book):
+        return \
+        {
+            "title": book.title,
+            "url": url_for("BooksView:get", id=book.id)
+        }
+    end
+end
 
 book_schema = BookSchema()
 books_schema = BookSchema(many=True)
