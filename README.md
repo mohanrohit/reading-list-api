@@ -11,6 +11,6 @@ An application to maintain a reading list
 
 ### Sprint 4 (2019/10/28 - 2019/11/08)
 
-- Add field to indicate whether a user has read a book or not
-  - Accept that field as an input while adding a book to a user
-  - Return that field with the books returned
+- Add field is_read to indicate whether a user has read a book or not
+  - Return is_read with the books returned for a user
+  - Allow for updating is_read field to true or false 
