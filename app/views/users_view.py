@@ -11,7 +11,9 @@ from flask_classful import route
 
 from .view import View
 
-from app.schemas import user_schema, users_schema, book_schema, books_schema
+from app.schemas import user_schema, users_schema
+from app.schemas import book_schema, books_schema
+from app.schemas import user_book_schema, user_books_schema
 
 class UsersView(View):
     def before_request(self, name, **kwargs):
@@ -93,7 +95,7 @@ class UsersView(View):
     def get_books(self, id):
         user_books = request.user.user_books
 
-        return jsonify({ "books": books_schema.dump(user_books) })
+        return jsonify({ "books": user_books_schema.dump(user_books) })
     end
 
     # POST /api/v1/users/<id>/books
@@ -118,7 +120,7 @@ class UsersView(View):
         # return 201 for both adding a new book and adding an existing book
         # because adding an existing book can be considered to be creating
         # a *new* book FOR the user
-        return jsonify(book_schema.dump(user_book)), 201
+        return jsonify(user_book_schema.dump(user_book)), 201
     end
 
     # DELETE /api/v1/users/<id>/books/<book_id>
