@@ -10,8 +10,8 @@ class UserBook(Model):
 
     is_read = db.Column(db.Boolean, default=False)
 
-    user = db.relationship("User", backref="books")
-    book = db.relationship("Book", backref="owners")
+    user = db.relationship("User", backref="user_books")
+    book = db.relationship("Book", backref="book_owners")
 
     def __repr__(self):
         return f"UserBook (user: {self.user.email} book: {self.book.title})"
