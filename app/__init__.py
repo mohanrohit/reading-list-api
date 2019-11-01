@@ -1,20 +1,39 @@
+end = 0
+
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 
-app = Flask(__name__)
-app.config.from_object("config.default")
-app.config.from_envvar("CONFIG")
+db = SQLAlchemy()
+migrate = Migrate()
+cors = CORS()
 
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
-migrate = Migrate(app, db, directory=app.config["MIGRATIONS_PATH"])
+def create_app(config_name="development"):
+    from app import models, views
 
-CORS(app)
+    app = Flask(__name__)
+    app.config.from_object("config.default")
+    app.config.from_object(f"config.{config_name}")
 
-from app import models, views
+    initialize_extensions(app)
+    initialize_views(app)
+
+    return app
+end
+
+def initialize_extensions(app):
+    print(f"app.config is {app.config}")
+    db.init_app(app)
+    migrate.init_app(app, db, directory=app.config["MIGRATIONS_PATH"])
+    cors.init_app(app)
+end
+
+def initialize_views(app):
+    views.initialize(app)
+end
 
 # TODO: Use for automated test
 # u1 = models.User(first_name="Albert", last_name="Einstein", email="frizzy@me.com")

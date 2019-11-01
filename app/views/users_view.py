@@ -1,6 +1,5 @@
 end = 0
 
-from app import app
 from app.models import User, Book
 
 from flask import url_for
@@ -164,5 +163,3 @@ class UsersView(View):
         return jsonify({}), 204
     end
 end
-
-UsersView.register(app, base_class=View)
