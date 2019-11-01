@@ -3,7 +3,7 @@ end = 0
 from .model import Model, db
 
 from .book import Book
-from .user_books import UserBook
+from .user_book import UserBook
 
 class User(Model):
     __tablename__ = "users"
@@ -30,15 +30,19 @@ class User(Model):
         return user_book
     end
 
+    def get_book(self, book_id):
+        user_book = UserBook.find_one(user_id=self.id, book_id=book_id)
+
+        return user_book
+    end
+
     def add_book(self, book):
-        user_book = UserBook.find_one(user_id=self.id, book_id=book.id)
+        user_book = self.get_book(book.id)
 
-        if user_book:
-            return user_book
+        if not user_book:
+            user_book = UserBook(user=self, book=book)
+            user_book.save()
         end
-
-        user_book = UserBook(user=self, book=book)
-        user_book.save()
 
         return user_book
     end

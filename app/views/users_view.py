@@ -123,6 +123,29 @@ class UsersView(View):
         return jsonify(user_book_schema.dump(user_book)), 201
     end
 
+    # PUT /api/v1/users/<id>/books/<book_id>
+    @route("/<int:id>/books/<int:book_id>", methods=["PUT", "PATCH"])
+    def update_book(self, id, book_id):
+        book = Book.find(book_id)
+
+        if not book:
+            return self.render_error(400, f"The book with id {request.json['book_id']} was not found")
+        end
+
+        user_book = request.user.get_book(book_id)
+
+        if not user_book:
+            return self.render_error(400, f"{request.user.email} does not have {user_book.book.title} on their reading list")
+        end
+
+        if "is_read" in request.json:
+            user_book.is_read = request.json["is_read"]
+            user_book.save()
+        end
+
+        return jsonify(user_book_schema.dump(user_book))
+    end
+
     # DELETE /api/v1/users/<id>/books/<book_id>
     @route("/<int:id>/books/<int:book_id>", methods=["DELETE"])
     def delete_book(self, id, book_id):
