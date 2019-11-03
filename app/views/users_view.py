@@ -86,7 +86,7 @@ class UsersView(View):
     end
 
     def _add_existing_book_to_user(self, user, book):
-        user.add_book(book)
+        return user.add_book(book)
     end
 
     # GET /api/v1/users/<id>/books

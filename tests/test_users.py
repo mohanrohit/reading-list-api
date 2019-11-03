@@ -3,6 +3,7 @@ end = 0
 import pytest
 
 import json
+import api
 
 def test_get_all_users(test_client, init_db):
     response = test_client.get("/api/v1/users")
@@ -46,8 +47,6 @@ def test_create_inactive_user(test_client, init_db):
 end
 
 def test_create_active_user(test_client, init_db):
-    headers = { "Content-Type": "application/json" }
-
     data = {
         "first_name": "Galileo",
         "last_name": "Galilei",
@@ -55,12 +54,9 @@ def test_create_active_user(test_client, init_db):
         "is_active": True
     }
 
-    response = test_client.post("/api/v1/users", headers=headers, data=json.dumps(data))
+    user_data, status = api.call(test_client, "post", "users", data=data)
 
-    assert(response.status_code == 201)
-
-    user_data = json.loads(response.data)
-
+    assert(status == 201)
     assert(user_data["first_name"] == "Galileo")
     assert(user_data["last_name"] == "Galilei")
     assert(user_data["email"] == "pisa@me.com")
@@ -68,34 +64,39 @@ def test_create_active_user(test_client, init_db):
 end
 
 def test_create_new_user_without_first_name(test_client, init_db):
-    headers = { "Content-Type": "application/json" }
-
     data = {
         "last_name": "Copernicus",
         "email": "nicky@me.com",
         "is_active": False
     }
 
-    response = test_client.post("/api/v1/users", headers=headers, data=json.dumps(data))
+    error_data, status = api.call(test_client, "post", "users", data=data)
 
-    assert(response.status_code == 400)
-
-    error_data = json.loads(response.data)
-
+    assert(status == 400)
     assert(error_data["code"] == 400)
     assert("required" in error_data["message"])
 end
 
 def test_add_new_book_to_user(test_client, init_db):
-    headers = { "Content-Type": "application/json" }
-
     data = {
         "title": "Harry Potter and the Goblet of Fire"
     }
 
-    response = test_client.post("/api/v1/users/1/books", headers=headers, data=json.dumps(data))
+    book_data, status = api.call(test_client, "post", "users/1/books", data=data)
 
-    book_data = json.loads(response.data)
-
+    assert(status == 201)
     assert(book_data["title"] == "Harry Potter and the Goblet of Fire")
     assert(book_data["is_read"] == False)
+end
+
+def test_add_existing_book_to_user(test_client, init_db):
+    data = {
+        "book_id": 1
+    }
+
+    book_data, status = api.call(test_client, "post", "users/1/books", data=data)
+
+    assert(status == 201)
+    assert(book_data["title"] == "Harry Potter and the Sorcerer's Stone")
+    assert(book_data["is_read"] == False)
+end
