@@ -35,6 +35,8 @@ def test_create_inactive_user(test_client, init_db):
 
     response = test_client.post("/api/v1/users", headers=headers, data=json.dumps(data))
 
+    assert(response.status_code == 201)
+
     user_data = json.loads(response.data)
 
     assert(user_data["first_name"] == "Isaac")
@@ -55,6 +57,8 @@ def test_create_active_user(test_client, init_db):
 
     response = test_client.post("/api/v1/users", headers=headers, data=json.dumps(data))
 
+    assert(response.status_code == 201)
+
     user_data = json.loads(response.data)
 
     assert(user_data["first_name"] == "Galileo")
@@ -62,3 +66,36 @@ def test_create_active_user(test_client, init_db):
     assert(user_data["email"] == "pisa@me.com")
     assert(user_data["is_active"] == True)
 end
+
+def test_create_new_user_without_first_name(test_client, init_db):
+    headers = { "Content-Type": "application/json" }
+
+    data = {
+        "last_name": "Copernicus",
+        "email": "nicky@me.com",
+        "is_active": False
+    }
+
+    response = test_client.post("/api/v1/users", headers=headers, data=json.dumps(data))
+
+    assert(response.status_code == 400)
+
+    error_data = json.loads(response.data)
+
+    assert(error_data["code"] == 400)
+    assert("required" in error_data["message"])
+end
+
+def test_add_new_book_to_user(test_client, init_db):
+    headers = { "Content-Type": "application/json" }
+
+    data = {
+        "title": "Harry Potter and the Goblet of Fire"
+    }
+
+    response = test_client.post("/api/v1/users/1/books", headers=headers, data=json.dumps(data))
+
+    book_data = json.loads(response.data)
+
+    assert(book_data["title"] == "Harry Potter and the Goblet of Fire")
+    assert(book_data["is_read"] == False)

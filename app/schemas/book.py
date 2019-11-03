@@ -10,7 +10,7 @@ class BookSchema(Schema):
     end
 
     def validate(self, params):
-        self.validate_required(params, title, "The title of the book is required")
+        self.validate_required(params, "title", "The title of the book is required")
 
         return { "title": params["title"] }
     end

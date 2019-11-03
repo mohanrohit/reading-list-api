@@ -51,3 +51,23 @@ def init_db():
 
     db.drop_all()
 end
+
+# @pytest.fixture(scope="function")
+# def call_api(method, uri, data):
+#     op = none
+
+#     methods = {
+#         "post": test_client.post,
+#         "get": test_client.get
+#     }
+
+#     op = methods[method]
+
+#     headers = { "content-type": "application/json" }
+
+#     response = op(uri, headers=headers, data=json.dumps(data) if data else none)
+
+#     result = response.data
+
+#     yield result
+# end
