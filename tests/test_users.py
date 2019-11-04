@@ -6,27 +6,21 @@ import json
 import api
 
 def test_get_all_users(test_client, init_db):
-    response = test_client.get("/api/v1/users")
-    assert(response.status_code == 200)
+    user_list, status = api.get(test_client, "users")
 
-    user_list = json.loads(response.data)["users"]
-
-    assert(len(user_list) == 4)
+    assert(status == 200)
+    assert(len(user_list["users"]) == 4)
 end
 
 def test_get_one_user(test_client, init_db):
-    response = test_client.get("/api/v1/users/1")
-    assert(response.status_code == 200)
+    user_data, status = api.get(test_client, "users/1")
 
-    user_data = json.loads(response.data)
-
+    assert(status == 200)
     assert(user_data["url"] == "/api/v1/users/1")
     assert(user_data["first_name"] == "Albert")
 end
 
 def test_create_inactive_user(test_client, init_db):
-    headers = { "Content-Type": "application/json" }
-
     data = {
         "first_name": "Isaac",
         "last_name": "Newton",
@@ -34,12 +28,9 @@ def test_create_inactive_user(test_client, init_db):
         "is_active": False
     }
 
-    response = test_client.post("/api/v1/users", headers=headers, data=json.dumps(data))
+    user_data, status = api.post(test_client, "users", data=data)
 
-    assert(response.status_code == 201)
-
-    user_data = json.loads(response.data)
-
+    assert(status == 201)
     assert(user_data["first_name"] == "Isaac")
     assert(user_data["last_name"] == "Newton")
     assert(user_data["email"] == "apples@me.com")
@@ -54,7 +45,7 @@ def test_create_active_user(test_client, init_db):
         "is_active": True
     }
 
-    user_data, status = api.call(test_client, "post", "users", data=data)
+    user_data, status = api.post(test_client, "users", data=data)
 
     assert(status == 201)
     assert(user_data["first_name"] == "Galileo")
@@ -70,7 +61,7 @@ def test_create_new_user_without_first_name(test_client, init_db):
         "is_active": False
     }
 
-    error_data, status = api.call(test_client, "post", "users", data=data)
+    error_data, status = api.post(test_client, "users", data=data)
 
     assert(status == 400)
     assert(error_data["code"] == 400)
@@ -82,7 +73,7 @@ def test_add_new_book_to_user(test_client, init_db):
         "title": "Harry Potter and the Goblet of Fire"
     }
 
-    book_data, status = api.call(test_client, "post", "users/1/books", data=data)
+    book_data, status = api.post(test_client, "users/1/books", data=data)
 
     assert(status == 201)
     assert(book_data["title"] == "Harry Potter and the Goblet of Fire")
@@ -94,7 +85,7 @@ def test_add_existing_book_to_user(test_client, init_db):
         "book_id": 1
     }
 
-    book_data, status = api.call(test_client, "post", "users/1/books", data=data)
+    book_data, status = api.post(test_client, "users/1/books", data=data)
 
     assert(status == 201)
     assert(book_data["title"] == "Harry Potter and the Sorcerer's Stone")

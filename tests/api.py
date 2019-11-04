@@ -16,3 +16,11 @@ def call(test_client, method, uri, data=None):
 
     return json.loads(response.data), response.status_code
 end
+
+def get(test_client, uri):
+    return call(test_client, "get", uri)
+end
+
+def post(test_client, uri, data=None):
+    return call(test_client, "post", uri, data)
+end
