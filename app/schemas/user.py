@@ -12,7 +12,7 @@ class UserSchema(Schema):
     def validate(self, params):
         self.validate_required(params, "first_name", "First name is required")
         self.validate_required(params, "last_name", "Last name is required")
-        self.validate_required(params, "email", "Last name is required")
+        self.validate_required(params, "email", "Email is required")
 
         return \
         { 

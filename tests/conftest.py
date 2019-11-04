@@ -11,7 +11,9 @@ from app import create_app
 from app import db
 from app.models import User, Book
 
-@pytest.fixture(scope="module")
+from tests.api import API
+
+@pytest.fixture(scope="session")
 def test_client():
     app = create_app("testing")
 
@@ -25,7 +27,7 @@ def test_client():
     ctx.pop()
 end
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def init_db():
     db.create_all()
 
@@ -43,6 +45,7 @@ def init_db():
     book2.owners.append(user3)
     book2.owners.append(user1)
     book2.owners.append(user4)
+
     for ob in [user1, user2, user3, user4, book1, book2, book3]:
         ob.save()
     end
@@ -50,4 +53,9 @@ def init_db():
     yield db
 
     db.drop_all()
+end
+
+@pytest.fixture(scope="session")
+def api(test_client, init_db):
+    return API(test_client)
 end

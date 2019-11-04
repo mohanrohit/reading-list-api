@@ -25,7 +25,6 @@ def create_app(config_name="development"):
 end
 
 def initialize_extensions(app):
-    print(f"app.config is {app.config}")
     db.init_app(app)
     migrate.init_app(app, db, directory=app.config["MIGRATIONS_PATH"])
     cors.init_app(app)
