@@ -64,7 +64,7 @@ def test_create_active_user(api):
 end
 
 @pytest.mark.parametrize("user_data", incomplete_user_data())
-def test_create_new_user_with_missing_required_field(api, user_data):
+def test_create_user_with_missing_required_field(api, user_data):
     error_data, status = api.post("users", data=user_data)
 
     assert(status == 400)
@@ -94,4 +94,43 @@ def test_add_existing_book_to_user(api):
     assert(status == 201)
     assert(book_data["title"] == "Harry Potter and the Sorcerer's Stone")
     assert(book_data["is_read"] == False)
+end
+
+@pytest.mark.parametrize("read_status", [True, False])
+def test_set_book_read(api, read_status):
+    data = {
+        "is_read": read_status
+    }
+
+    book_data, status = api.put("users/1/books/2", data)
+
+    assert(status == 200)
+    assert(book_data["url"] == "/api/v1/books/2")
+    assert(book_data["is_read"] == read_status)
+end
+
+@pytest.mark.parametrize("read_status", [True, False])
+def test_set_non_existent_book_read(api, read_status):
+    data = {
+        "is_read": read_status
+    }
+
+    error_data, status = api.put("users/1/books/10", data)
+
+    assert(status == 400)
+    assert(error_data["code"] == 400)
+    assert("not found" in error_data["message"])
+end
+
+@pytest.mark.parametrize("read_status", [True, False])
+def test_set_unowned_book_read(api, read_status):
+    data = {
+        "is_read": read_status
+    }
+
+    error_data, status = api.put("users/1/books/3", data)
+
+    assert(status == 400)
+    assert(error_data["code"] == 400)
+    assert("does not have" in error_data["message"])
 end

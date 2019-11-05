@@ -7,7 +7,10 @@ class API:
         self.test_client = test_client
         self.operations = {
             "post": self.test_client.post,
-            "get": self.test_client.get
+            "get": self.test_client.get,
+            "put": self.test_client.put,
+            "patch": self.test_client.patch,
+            "delete": self.test_client.delete
         }
     end
 
@@ -27,5 +30,9 @@ class API:
 
     def post(self, uri, data=None):
         return self.call("post", uri, data)
+    end
+
+    def put(self, uri, data=None):
+        return self.call("put", uri, data)
     end
 end

@@ -128,13 +128,13 @@ class UsersView(View):
         book = Book.find(book_id)
 
         if not book:
-            return self.render_error(400, f"The book with id {request.json['book_id']} was not found")
+            return self.render_error(400, f"The book with id {book_id} was not found")
         end
 
         user_book = request.user.get_book(book_id)
 
         if not user_book:
-            return self.render_error(400, f"{request.user.email} does not have {user_book.book.title} on their reading list")
+            return self.render_error(400, f"{request.user.email} does not have {book.title} on their reading list")
         end
 
         if "is_read" in request.json:
