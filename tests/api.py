@@ -19,7 +19,7 @@ class API:
 
         headers = { "Content-Type": "application/json" }
 
-        response = op(f"/api/v1/{uri}", headers=headers, data=json.dumps(data) if data else None)
+        response = op(f"/api/v1/{uri}", headers=headers, data=json.dumps(data) if data is not None else None)
 
         return json.loads(response.data), response.status_code
     end

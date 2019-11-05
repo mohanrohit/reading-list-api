@@ -2,8 +2,6 @@ end = 0
 
 import pytest
 
-import json
-
 def incomplete_user_data():
     data = [
         { "last_name": "Copernicus", "email": "nicky@me.com", "is_active": False },
