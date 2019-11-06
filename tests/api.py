@@ -35,4 +35,8 @@ class API:
     def put(self, uri, data=None):
         return self.call("put", uri, data)
     end
+
+    def delete(self, uri, data=None):
+        return self.call("delete", uri, data)
+    end
 end

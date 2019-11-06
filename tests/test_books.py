@@ -44,3 +44,17 @@ def test_update_book_title(api):
     assert(book_data["title"] == "Harry Potter and the Philosopher's Stone")
     assert(book_data["url"] == "/api/v1/books/1")
 end
+
+def test_delete_existing_book(api):
+    book_data, status = api.delete("books/1")
+
+    assert(status == 204)
+end
+
+def test_delete_nonexisting_book(api):
+    book_data, status = api.delete("books/10")
+
+    assert(status == 404)
+    assert(book_data["code"] == 404)
+    assert("not found" in book_data["message"])
+end
