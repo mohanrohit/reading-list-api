@@ -21,7 +21,7 @@ class API:
 
         response = op(f"/api/v1/{uri}", headers=headers, data=json.dumps(data) if data is not None else None)
 
-        return json.loads(response.data), response.status_code
+        return json.loads(response.data) if response.data else "", response.status_code
     end
 
     def get(self, uri):

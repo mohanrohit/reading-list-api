@@ -37,7 +37,7 @@ def init_db():
     user4 = User(first_name="Werner", last_name="Heisenberg", email="thisorthat@me.com")
 
     book1 = Book(title="Harry Potter and the Sorcerer's Stone")
-    book2 = Book(title="Harry Potter and the Chamber of Secret")
+    book2 = Book(title="Harry Potter and the Chamber of Secrets")
     book3 = Book(title="Harry Potter and the Prisoner of Azkaban")
 
     user1.books.append(book1)

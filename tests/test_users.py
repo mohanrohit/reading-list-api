@@ -84,13 +84,13 @@ end
 
 def test_add_existing_book_to_user(api):
     data = {
-        "book_id": 1
+        "book_id": 2
     }
 
     book_data, status = api.post("users/1/books", data=data)
 
     assert(status == 201)
-    assert(book_data["title"] == "Harry Potter and the Sorcerer's Stone")
+    assert(book_data["title"] == "Harry Potter and the Chamber of Secrets")
     assert(book_data["is_read"] == False)
 end
 
