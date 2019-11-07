@@ -111,3 +111,6 @@ dmypy.json
 # VS
 .vscode
 .vs
+
+# SQLite database
+*.db

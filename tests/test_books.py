@@ -51,7 +51,7 @@ def test_delete_existing_book(api):
     assert(status == 204)
 end
 
-def test_delete_nonexisting_book(api):
+def test_delete_non_existent_book(api):
     book_data, status = api.delete("books/10")
 
     assert(status == 404)

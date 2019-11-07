@@ -132,3 +132,22 @@ def test_set_unowned_book_read(api, read_status):
     assert(error_data["code"] == 400)
     assert("does not have" in error_data["message"])
 end
+
+@pytest.mark.parametrize("read_status", [True, False])
+def test_set_book_read_for_non_existent_user(api, read_status):
+    data = {
+        "is_read": read_status
+    }
+
+    error_data, status = api.put("users/10/books/3", data)
+
+    assert(status == 404)
+    assert(error_data["code"] == 404)
+    assert("not found" in error_data["message"])
+end
+
+def test_delete_existing_user(api):
+    user_data, status = api.delete("users/1")
+
+    assert(status == 204)
+end
