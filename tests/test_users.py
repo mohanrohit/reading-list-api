@@ -151,3 +151,11 @@ def test_delete_existing_user(api):
 
     assert(status == 204)
 end
+
+def test_delete_non_existent_user(api):
+    error_data, status = api.delete("users/10")
+
+    assert(status == 404)
+    assert(error_data["code"] == 404)
+    assert("not found" in error_data["message"])
+end

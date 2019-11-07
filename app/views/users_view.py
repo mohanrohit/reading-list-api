@@ -80,7 +80,6 @@ class UsersView(View):
 
     def _create_new_book_for_user(self, user, params):
         new_book = user.create_book(params)
-        #new_book.save()
 
         return new_book
     end
