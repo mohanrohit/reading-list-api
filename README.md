@@ -13,6 +13,14 @@ An application to maintain a reading list
 
 - Add field is_read to indicate whether a user has read a book or not
   - Return is_read with the books returned for a user
-  - Allow for updating is_read field to true or false 
+  - Allow for updating is_read field to true or false
 
 - Add tests using pytest
+
+### Sprint 5 (2019/11/11 - 2019/11/22)
+
+- Add user authentication
+  - Store a user name and password
+  - Register with a user name and password
+  - Login with user name and password
+  - Allow actions with authorization
