@@ -11,7 +11,9 @@ db = SQLAlchemy()
 migrate = Migrate()
 cors = CORS()
 
-def create_app(config_name="development"):
+def create_app():
+    config_name = os.getenv("FLASK_ENV") or "development"
+
     from app import models, views
 
     app = Flask(__name__)
