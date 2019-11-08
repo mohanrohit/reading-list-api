@@ -4,9 +4,10 @@ import pytest
 
 def incomplete_user_data():
     data = [
-        { "last_name": "Copernicus", "email": "nicky@me.com", "is_active": False },
-        { "first_name": "Nicolas", "email": "nicky@me.com", "is_active": False },
-        { "first_name": "Nicolas", "last_name": "Copernicus", "is_active": False }
+        { "last_name": "Copernicus", "email": "nicky@me.com", "password": "P@55w0rd", "is_active": False },
+        { "first_name": "Nicolas", "email": "nicky@me.com", "password": "P@55w0rd", "is_active": False },
+        { "first_name": "Nicolas", "last_name": "Copernicus", "password": "P@55w0rd", "is_active": False },
+        { "first_name": "Nicolas", "last_name": "Copernicus", "email": "nicky@me.com", "is_active": False }
     ]
 
     return data
@@ -32,6 +33,7 @@ def test_create_inactive_user(api):
         "first_name": "Isaac",
         "last_name": "Newton",
         "email": "apples@me.com",
+        "password": "P@55w0rd",
         "is_active": False
     }
 
@@ -48,6 +50,7 @@ def test_create_active_user(api):
     data = {
         "first_name": "Galileo",
         "last_name": "Galilei",
+        "password": "P@55w0rd",
         "email": "pisa@me.com",
         "is_active": True
     }

@@ -31,10 +31,10 @@ end
 def init_db():
     db.create_all()
 
-    user1 = User(first_name="Albert", last_name="Einstein", email="frizzy@me.com")
-    user2 = User(first_name="Enrico", last_name="Fermi", email="fermi@me.com")
-    user3 = User(first_name="Paul", last_name="Dirac", email="delta@me.com")
-    user4 = User(first_name="Werner", last_name="Heisenberg", email="thisorthat@me.com")
+    user1 = User(first_name="Albert", last_name="Einstein", password="P@55w0rd", email="frizzy@me.com")
+    user2 = User(first_name="Enrico", last_name="Fermi", password="P@55w0rd", email="fermi@me.com")
+    user3 = User(first_name="Paul", last_name="Dirac", password="P@55w0rd", email="delta@me.com")
+    user4 = User(first_name="Werner", last_name="Heisenberg", password="P@55w0rd", email="thisorthat@me.com")
 
     book1 = Book(title="Harry Potter and the Sorcerer's Stone")
     book2 = Book(title="Harry Potter and the Chamber of Secrets")

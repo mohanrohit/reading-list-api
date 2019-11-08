@@ -13,12 +13,14 @@ class UserSchema(Schema):
         self.validate_required(params, "first_name", "First name is required")
         self.validate_required(params, "last_name", "Last name is required")
         self.validate_required(params, "email", "Email is required")
+        self.validate_required(params, "password", "Password is required")
 
         return \
         { 
             "first_name": params["first_name"],
             "last_name": params["last_name"],
             "email": params["email"],
+            "password": params["password"],
             "is_active": params.get("is_active", False)
         }
     end
