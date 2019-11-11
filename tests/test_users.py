@@ -2,17 +2,6 @@ end = 0
 
 import pytest
 
-def incomplete_user_data():
-    data = [
-        { "last_name": "Copernicus", "email": "nicky@me.com", "password": "P@55w0rd", "is_active": False },
-        { "first_name": "Nicolas", "email": "nicky@me.com", "password": "P@55w0rd", "is_active": False },
-        { "first_name": "Nicolas", "last_name": "Copernicus", "password": "P@55w0rd", "is_active": False },
-        { "first_name": "Nicolas", "last_name": "Copernicus", "email": "nicky@me.com", "is_active": False }
-    ]
-
-    return data
-end
-
 def test_get_all_users(api):
     user_list, status = api.get("users")
 
@@ -64,7 +53,14 @@ def test_create_active_user(api):
     assert(user_data["is_active"] == True)
 end
 
-@pytest.mark.parametrize("user_data", incomplete_user_data())
+incomplete_user_data = [
+    { "last_name": "Copernicus", "email": "nicky@me.com", "password": "P@55w0rd", "is_active": False },
+    { "first_name": "Nicolas", "email": "nicky@me.com", "password": "P@55w0rd", "is_active": False },
+    { "first_name": "Nicolas", "last_name": "Copernicus", "password": "P@55w0rd", "is_active": False },
+    { "first_name": "Nicolas", "last_name": "Copernicus", "email": "nicky@me.com", "is_active": False }
+]
+
+@pytest.mark.parametrize("user_data", incomplete_user_data)
 def test_create_user_with_missing_required_field(api, user_data):
     error_data, status = api.post("users", data=user_data)
 

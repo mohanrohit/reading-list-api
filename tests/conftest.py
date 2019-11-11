@@ -16,7 +16,7 @@ from app.models import User, Book
 
 from tests.api import API
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def test_client():
     app = create_app("testing")
 
@@ -30,7 +30,7 @@ def test_client():
     ctx.pop()
 end
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def init_db():
     db.create_all()
 
@@ -58,7 +58,7 @@ def init_db():
     db.drop_all()
 end
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def api(test_client, init_db):
     return API(test_client)
 end

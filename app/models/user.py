@@ -40,7 +40,7 @@ class User(Model):
             return None
         end
 
-        if check_password_hash(params["password"], user.password):
+        if not check_password_hash(user.password, params["password"]):
             return None
         end
 
