@@ -5,6 +5,9 @@ import sys
 
 sys.path.append(os.getcwd())
 
+from dotenv import load_dotenv
+load_dotenv(verbose=True)
+
 import pytest
 
 from app import create_app

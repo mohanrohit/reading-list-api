@@ -28,6 +28,25 @@ class User(Model):
         Model.__init__(self, **params)
     end
 
+    @classmethod
+    def authenticate(User, **params):
+        if not "email" in params or not "password" in params:
+            return None
+        end
+
+        user = User.find_one(email=params["email"])
+
+        if not user:
+            return None
+        end
+
+        if check_password_hash(params["password"], user.password):
+            return None
+        end
+
+        return user
+    end
+
     def has_book(self, book):
         return True if UserBook.find_one(user_id=self.id, book_id=book.id) else False
     end
