@@ -10,7 +10,10 @@ class Model(db.Model):
     __abstract__ = True
 
     @classmethod
-    def all(cls):
+    def all(cls, **params):
+        if params:
+            return cls.query.filter_by(**params)
+
         return cls.query.all()
 
     @classmethod

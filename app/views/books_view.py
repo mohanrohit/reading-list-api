@@ -22,11 +22,15 @@ from app.schemas import user_books_schema
 def user(function):
     @wraps(function)
     def _get_user(*args, **kwargs):
+        request.user = None
+
+        if not "Authorization" in request.headers:
+            return function(*args, **kwargs)
+        end
+
         auth_headers = request.headers.get("Authorization").split()
 
         if len(auth_headers) != 2:
-            request.user = None
-
             return function(*args, **kwargs)
         end
 
@@ -56,8 +60,14 @@ class BooksView(View):
     # owner=<user-id>. for owner=<user-id>, either the logged
     # in user must be admin or the <user-id> must be the same
     # as the logged in user.
-    # @user
+    @user
     def index(self):
+        if request.user and request.args.get("owner") == "me":
+            books = request.user.get_books()
+
+            return jsonify({ "books": user_books_schema.dump(books) })
+        end
+
         # owner = request.args.get("owner")
 
         # if owner == "me":

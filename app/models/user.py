@@ -16,7 +16,7 @@ class User(Model):
     email = db.Column(db.String(128), nullable=False, unique=True, index=True)
     password = db.Column(db.String(256), nullable=False)
     is_active = db.Column(db.Boolean(), default=False, nullable=False)
-    books = db.relationship("Book", secondary="user_books", lazy="dynamic", backref="owners")
+    books = db.relationship("Book", secondary="user_books", backref="owners")
 
     def __init__(self, **params):
         # update the password in the params with the hashed password before creating the
@@ -60,6 +60,10 @@ class User(Model):
         user_book.save()
 
         return user_book
+    end
+
+    def get_books(self):
+        return UserBook.all(user_id=self.id)
     end
 
     def get_book(self, book_id):

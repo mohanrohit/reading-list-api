@@ -91,7 +91,7 @@ class UsersView(View):
     # GET /api/v1/users/<id>/books
     @route("/<int:id>/books", methods=["GET"])
     def get_books(self, id):
-        user_books = request.user.user_books
+        user_books = request.user.get_books()
 
         return jsonify({ "books": user_books_schema.dump(user_books) })
     end
