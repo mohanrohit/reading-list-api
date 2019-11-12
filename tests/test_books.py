@@ -9,6 +9,12 @@ def test_get_all_books(api):
     assert(len(book_list["books"]) == 3)
 end
 
+# def test_get_all_books_for_logged_in_user(api, user):
+#     book_list, status = api.get("books?owner=me", headers={"Authorization": f"Bearer {user['token']}" })
+
+#     assert(status == 200)
+# end
+
 def test_get_one_book(api):
     book_data, status = api.get("books/1")
 

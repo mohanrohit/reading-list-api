@@ -14,18 +14,23 @@ class API:
         }
     end
 
-    def call(self, method, uri, data=None):
+    def call(self, method, uri, data=None, headers=None):
         op = self.operations.get(method) or self.operations["get"]
 
-        headers = { "Content-Type": "application/json" }
+        all_headers = { "Content-Type": "application/json" }
+        if headers:
+            for key in headers:
+                all_headers[key] = headers[key]
+            end
+        end
 
-        response = op(f"/api/v1/{uri}", headers=headers, data=json.dumps(data) if data is not None else None)
+        response = op(f"/api/v1/{uri}", headers=all_headers, data=json.dumps(data) if data is not None else None)
 
         return json.loads(response.data) if response.data else "", response.status_code
     end
 
-    def get(self, uri):
-        return self.call("get", uri)
+    def get(self, uri, **kwargs):
+        return self.call("get", uri, **kwargs)
     end
 
     def post(self, uri, data=None):

@@ -62,3 +62,10 @@ end
 def api(test_client, init_db):
     return API(test_client)
 end
+
+@pytest.fixture(scope="function")
+def user(api, init_db):
+    user_data, status = api.post("auth/login", data={ "email": "frizzy@me.com", "password": "P@55w0rd" })
+
+    yield user_data
+end
