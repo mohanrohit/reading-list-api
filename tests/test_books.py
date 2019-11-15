@@ -9,10 +9,23 @@ def test_get_all_books(api):
     assert(len(book_list["books"]) == 3)
 end
 
-def test_get_all_books_for_logged_in_user(api, auth):
-    book_list, status = api.get("books?owner=me", headers={"Authorization": f"Bearer {auth['token']}" })
+owners = [ "", "me", "1", 1 ]
+
+@pytest.mark.parametrize("owner", owners)
+def test_get_all_books_for_logged_in_user(api, auth, owner):
+    book_list, status = api.get(f"books?owner={owner}", headers={"Authorization": f"Bearer {auth['token']}" })
 
     assert(status == 200)
+    assert(len(book_list["books"]) == 2)
+end
+
+invalid_owners = [ None, "2" ]
+
+@pytest.mark.parametrize("owner", invalid_owners)
+def test_get_all_books_for_incorrect_user(api, auth, owner):
+    error_data, status = api.get(f"books?owner={owner}", headers={"Authorization": f"Bearer {auth['token']}" })
+
+    assert(status == 403)
 end
 
 def test_get_one_book(api):

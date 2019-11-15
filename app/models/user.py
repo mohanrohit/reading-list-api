@@ -47,6 +47,11 @@ class User(Model):
         return user
     end
 
+    def is_admin(self):
+        # get this from the database, but for now return False
+        return False
+    end
+
     def has_book(self, book):
         return True if UserBook.find_one(user_id=self.id, book_id=book.id) else False
     end

@@ -62,26 +62,35 @@ class BooksView(View):
     # as the logged in user.
     @user
     def index(self):
-        if request.user and request.args.get("owner") == "me":
+        if not request.user:
+            books = Book.all()
+
+            return jsonify({ "books": books_schema.dump(books) })
+        end
+
+        owner = request.args.get("owner")
+
+        if not owner or owner == "me" or owner == str(request.user.id):
             books = request.user.get_books()
 
             return jsonify({ "books": user_books_schema.dump(books) })
         end
 
-        # owner = request.args.get("owner")
+        # owner is a user-id. show books only if the logged in user
+        # is admin
+        if not request.user.is_admin():
+            return self.render_error(403, "You are not authorized to see another user's books")
+        end
 
-        # if owner == "me":
-        #     if not request.user:
-        #         return self.render_error(403, "No authorization")
-        #     end
+        other_user = User.find(owner)
 
-        #     #return redirect(url_for("UsersView:get_books", id=request.user.id))
-        #     return jsonify({ "books": user_books_schema.dump(request.user.books) })
-        # end
+        if not other_user:
+            return self.render_error(400, f"No user with id {owner} was found.")
+        end
 
-        books = Book.all()
+        books = other_user.get_books()
 
-        return jsonify({ "books": books_schema.dump(books) })
+        return jsonify({ "books": user_books_schema.dump(books) })
     end
 
     def get(self, id):
